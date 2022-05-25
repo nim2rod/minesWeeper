@@ -1,0 +1,11 @@
+.cell {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    background-color: rgb(146, 74, 104);
+}
+
+body {
+    background-color: rgb(69, 226, 231);
+    color: white;
+}

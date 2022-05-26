@@ -7,12 +7,21 @@
     <link rel="stylesheet" href="design.css">
     <title>Document</title>
 </head>
-<body onload="init()">
-
+<body onload="init()" >
+    <button onclick="easyLevel()">easy level🐠</button>
+    <button onclick="mediumLevel()">medium level🐬 </button>
+    <button onclick="expertLevel()">expert level🐳</button>
+    <div class="game-over"> game over</div>
+    <div class="win-game"> you win!!</div>
     <table>
         <tbody class="mines-board">
         </tbody>
     </table>
+   <div class="timer">0</div>
+    <button class="smile" onclick="init()">🙂</button>
+    <span class="life1" >💛</span>
+    <span class="life2" >💛</span>
+    <span class="life3" >💛</span>
 
     <script src="jsFolder/game.js"></script>
     <script src="jsFolder/utils.js"></script>

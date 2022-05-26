@@ -1,6 +1,6 @@
 .cell {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     text-align: center;
     background-color: rgb(146, 74, 104);
 }
@@ -8,4 +8,53 @@
 body {
     background-color: rgb(69, 226, 231);
     color: white;
+}
+
+
+.timer{
+    color: rgb(118, 17, 54);
+    width: 296px;
+    background-color: rgb(140, 191, 220);
+    text-align: center;
+    border: 30px
+}
+
+.game-over{
+    background-color: rgb(84, 50, 50);
+    display: none;
+    font-size: larger;
+    text-align: center;
+    font-style: italic;
+    width: 296px;
+    height: 30px;
+    text-align: center;
+    margin-top: 3px;
+}
+
+.win-game{
+    background-color: rgb(106, 194, 132);
+    display: none;
+    font-size: larger;
+    text-align: center;
+    font-style: italic;
+    width: 296px;
+    height: 30px;
+    text-align: center;
+    margin-top: 3px;
+}
+
+.smile{
+margin-left: 112px;
+font-size: 60px;
+}
+
+.life1{
+display: span;
+}
+
+.life2{
+display: span;
+}
+.life3{
+display: span;
 }

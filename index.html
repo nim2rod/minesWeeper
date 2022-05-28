@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="design.css">
     <title>Document</title>
 </head>
-<body onload="init()" >
+<body onload="init()" oncontextmenu="return false;" >
     <button onclick="easyLevel()">easy level🐠</button>
     <button onclick="mediumLevel()">medium level🐬 </button>
     <button onclick="expertLevel()">expert level🐳</button>
@@ -18,10 +18,18 @@
         </tbody>
     </table>
    <div class="timer">0</div>
+   <button class="safe-click" onclick="safeClick()">Safe Click -3-</button>
+
     <button class="smile" onclick="init()">🙂</button>
-    <span class="life1" >💛</span>
-    <span class="life2" >💛</span>
-    <span class="life3" >💛</span>
+        <span class="life1" >💛</span>
+        <span class="life2" >💛</span>
+        <span class="life3" >💛</span>
+        <span class="best-score" >BEST SCORE: </span>
+        <div>
+            <span class="hint1" onclick="hintOn()">💡</span>
+        <span class="hint2" onclick="hintOn()">💡</span>
+        <span class="hint3" onclick="hintOn()">💡</span>
+        </div>
 
     <script src="jsFolder/game.js"></script>
     <script src="jsFolder/utils.js"></script>

@@ -1,20 +1,22 @@
 'use strict'
 var EMPTY = ''
 var FLAG = '🏁'
-var MINE = '💩'  
+var MINE = '💩'
 
-// var audio = src('sounds/win.wav');
-// audio.play();
 
 
 var isMarkedCounter = 0
 var isShownCounter = 0
 var isMineCounter = 0
 
+var gBestScore = ''
+var gSafeNum = 3
 var gLife = 3
 var gTimer = 0
 var elTimer
 var timerSet
+var gHintNum = 3
+var gHintOn = false
 
 var gBoard = []
 var gGame = {
@@ -25,111 +27,75 @@ var gLevel = {
     SIZE: 4,
     MINES: 2
 }
-/// להוסיף בשורת body
+/// להוסיף בשורת body         oncontextmenu="return false;"
 ////   oncontextmenu="return false;"
 
-function playerLevel(matSize,minesNumber){
-gLevel.SIZE = matSize
-gLevel.MINES = minesNumber
+function playerLevel(matSize, minesNumber) {
+    gLevel.SIZE = matSize
+    gLevel.MINES = minesNumber
 }
 
-function easyLevel(){
-    gTimer = 0
+function easyLevel() {
     gLevel.SIZE = 4
     gLevel.MINES = 2
-    gBoard = buildboard(gLevel.SIZE, gLevel.SIZE  )
-    renderBoard(gBoard)
-    isMineCounter = 0
-    isMarkedCounter = 0
-    isShownCounter = 0
-    gGame.isOn = true
-    var elgameOver = document.querySelector('.game-over')
-        elgameOver.style.display = 'none'
-    var elSmile = document.querySelector('.smile') //סמיילי
-    elSmile.innerHTML = '🙂'
-    gLife = 3
-
-    var elLife = document.querySelector('.life1') //לבבות חיים
-    elLife.style.display = 'block'
-    var elLife2 = document.querySelector('.life2') //לבבות חיים
-    elLife2.style.display = 'block'
-    var elLife3 = document.querySelector('.life3') //לבבות חיים
-    elLife3.style.display = 'block'
-
+    init()
 }
-function mediumLevel(){
-    gTimer = 0
+function mediumLevel() {
     gLevel.SIZE = 8
     gLevel.MINES = 12
-    gBoard = buildboard(gLevel.SIZE, gLevel.SIZE  )
-    renderBoard(gBoard)
-    isMineCounter = 0
-    isMarkedCounter = 0
-    isShownCounter = 0
-    gGame.isOn = true
-    var elgameOver = document.querySelector('.game-over')
-        elgameOver.style.display = 'none'
-        var elSmile = document.querySelector('.smile') //סמיילי
-        elSmile.innerHTML = '🙂'
-        
-        gLife = 3
-        var elLife = document.querySelector('.life1') //לבבות חיים
-        elLife.style.display = 'block'
-        var elLife2 = document.querySelector('.life2') //לבבות חיים
-        elLife2.style.display = 'block'
-        var elLife3 = document.querySelector('.life3') //לבבות חיים
-        elLife3.style.display = 'block'
+    init()
 }
 
-function expertLevel(){
-    gTimer = 0
+function expertLevel() {
     gLevel.SIZE = 12
     gLevel.MINES = 30
-    gBoard = buildboard(gLevel.SIZE, gLevel.SIZE  )
-    renderBoard(gBoard)
-    isMineCounter = 0
-    isMarkedCounter = 0
-    isShownCounter = 0
-    gGame.isOn = true
-    var elgameOver = document.querySelector('.game-over')
-        elgameOver.style.display = 'none'
-        var elSmile = document.querySelector('.smile') //סמיילי
-        elSmile.innerHTML = '🙂'
-        
-        gLife = 3
-        var elLife = document.querySelector('.life1') //לבבות חיים
-        elLife.style.display = 'block'
-        var elLife2 = document.querySelector('.life2') //לבבות חיים
-        elLife2.style.display = 'block'
-        var elLife3 = document.querySelector('.life3') //לבבות חיים
-        elLife3.style.display = 'block'
+    init()
 }
 
 function init() {
-    // var sizeQuest = +prompt('choose the size of your playboard!: 4 , 8 or 12')
-    // var minesNum 
-    // if(sizeQuest === 4) minesNum = 2
-    // if(sizeQuest === 8) minesNum = 12
-    // if(sizeQuest === 12) minesNum = 30
-    // if((sizeQuest !== 4) &&  (sizeQuest !== 8) && (sizeQuest !== 12)){
-    //      alert('only 4, 8 or 12🐹, we will start with 4 then')
-    //      sizeQuest = 4
-    //      minesNum = 2
-    // }
-    // gLevel.SIZE = 4
-    // gLevel.MINES = 2
-    // playerLevel(sizeQuest , minesNum)
-    gBoard = buildboard(gLevel.SIZE, gLevel.SIZE  )
+    gBoard = buildboard(gLevel.SIZE, gLevel.SIZE)           // board
     renderBoard(gBoard)
 
-    isMineCounter = 0
-   isMarkedCounter = 0
-   isShownCounter = 0
+    clearInterval(timerSet)                                 // timer
+    gTimer = 0
+    document.querySelector('.timer').innerText = gTimer
+
+    isMineCounter = 0                                       // איפוסים
+    isMarkedCounter = 0
+    isShownCounter = 0
+    gSafeNum = 3
+    gLife = 3
+    gBestScore = ''
+    gHintNum = 3
+    gHintOn = false
 
     gGame.isOn = true
 
-    var elSmile = document.querySelector('.smile') //סמיילי
+    var elSmile = document.querySelector('.smile')          //סמיילי
     elSmile.innerHTML = '🙂'
+    var elgameOver = document.querySelector('.game-over')   // מודל הפסד
+    elgameOver.style.display = 'none'
+
+    var elGameWin = document.querySelector('.win-game')     // מודל נצחון
+    elGameWin.style.display = 'none'
+
+    var elLife = document.querySelector('.life1')           //לבבות חיים
+    elLife.style.display = 'inline-block'
+    var elLife2 = document.querySelector('.life2')          //לבבות חיים
+    elLife2.style.display = 'inline-block'
+    var elLife3 = document.querySelector('.life3')          //לבבות חיים
+    elLife3.style.display = 'inline-block'
+    var elClick = document.querySelector('.safe-click')     //שינוי מספר על המסך
+    elClick.innerHTML = `Safe Click -${gSafeNum}-`
+    var elBestScore = document.querySelector('.best-score') //best score
+    elBestScore.innerHTML = `BEST SCORE: ${gBestScore}`
+    var elHint = document.querySelector(`.hint1`) //להחזיר למסך אייקון של הרמז
+    elHint.style.display = 'inline-block'
+    var elHint = document.querySelector(`.hint2`) //להחזיר למסך אייקון של הרמז
+    elHint.style.display = 'inline-block'
+    var elHint = document.querySelector(`.hint3`) //להחזיר למסך אייקון של הרמז
+    elHint.style.display = 'inline-block'
+
 
     console.log(gBoard)
 }
@@ -166,7 +132,7 @@ function renderBoard(board) {
             // פה מוסיפים קלאס
             // פותחים טייבל דאטא
             strHTML += `<td class="cell ${cellClass}" onclick="cellClicked(2,${i},${j})" oncontextmenu="rightClicked(${i},${j})" >`
-            if (currCell.isMine) {
+            if (currCell.isMine) {   //// פה משהו נראה מיותר
                 strHTML += `${EMPTY}`
             } else {
                 strHTML += `${EMPTY}`
@@ -214,51 +180,61 @@ function getClassName(location) {
     return cellClass
 }
 
-function rightClicked(i,j){
-    if(!gGame.isOn) return
+function rightClicked(i, j) {
+    if (!gGame.isOn) return
     renderTimer()
-   
+
     var locationFlag = { i: i, j: j }
 
-    if(!gBoard[i][j].isMarked){   // אם התא לא מדוגל
-        if(gBoard[i][j].isShown) return //  אבל כן חשוף - דלגג
-                                        // אם לא חשוף ולא מדוגל ונלחץ קליק ימני
+    if (!gBoard[i][j].isMarked) {   // אם התא לא מדוגל
+        if (gBoard[i][j].isShown) return //  אבל כן חשוף - דלגג
+        // אם לא חשוף ולא מדוגל ונלחץ קליק ימני
         gBoard[i][j].isMarked = true  // 
         isMarkedCounter++
-        renderCell(locationFlag,FLAG)
+        renderCell(locationFlag, FLAG)
 
-    } else if(gBoard[i][j].isMarked){  // אם התא מדוגל
+    } else if (gBoard[i][j].isMarked) {  // אם התא מדוגל
         gBoard[i][j].isMarked = false // 
         gBoard[i][j].isShown = false
         isMarkedCounter--
-        renderCell(locationFlag,EMPTY,false)
-    } 
+        renderCell(locationFlag, EMPTY, false)
+    }
 }
-function revealsMinesLose(){
+function revealsMinesLose() {
     // var locationCell = { i: i, j: j }
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[0].length; j++) {
-            if(gBoard[i][j].isMine)  renderCell({ i: i , j: j }, MINE)
+            if (gBoard[i][j].isMine) renderCell({ i: i, j: j }, MINE)
         }
     }
 }
 
-function winTrueLoseFalse(trueOrFalse){
-    if(trueOrFalse){  //נצחון
-    
+function winTrueLoseFalse(trueOrFalse) {
+    if (trueOrFalse) {  //נצחון
+
         console.log('winner')
 
+        var audio = new Audio('sounds/win.wav')
+        audio.play()
+
+        if (gBestScore < gTimer) gBestScore = gTimer
+        var elBestScore = document.querySelector('.best-score') //best score
+        elBestScore.innerHTML = `BEST SCORE: ${gBestScore}`
         clearInterval(timerSet)
+        gTimer = 0
         var elWinGame = document.querySelector('.win-game')
         elWinGame.style.display = 'block'
-        
+
         var elSmile = document.querySelector('.smile') //סמיילי
         elSmile.innerHTML = '🥳'
 
-    }else if(trueOrFalse === false){  // הפסד
+    } else if (trueOrFalse === false) {  // הפסד
         revealsMinesLose()
+        var audio = new Audio('sounds/lose2.wav')
+        audio.play()
         gGame.isOn = false
         clearInterval(timerSet)
+        gTimer = 0
         console.log('loser')
         var elgameOver = document.querySelector('.game-over')
         elgameOver.style.display = 'block'
@@ -266,21 +242,21 @@ function winTrueLoseFalse(trueOrFalse){
         elSmile.innerHTML = '😵'
     }
 }
-// && (isMarkedCounter === gLevel.MINES)
-function checkIfWin(){
-    if((isShownCounter === gLevel.SIZE**2)  ){
+
+function checkIfWin() {
+    if ((isShownCounter === gLevel.SIZE ** 2) && (isMarkedCounter <= gLevel.MINES)) {
         winTrueLoseFalse(true)
-        
+
     }
 }
 
-function locateMines(iIndx,jIndx){
+function locateMines(iIndx, jIndx) {
     var minesNum = gLevel.MINES
     var matLength = gLevel.SIZE
-    for (var i = 0 ; i < minesNum ; i++) {
+    for (var i = 0; i < minesNum; i++) {
         var randNumI = getRandomInt(0, matLength)
         var randNumJ = getRandomInt(0, matLength)
-        if(randNumI === iIndx && randNumJ === jIndx){
+        if (randNumI === iIndx && randNumJ === jIndx) {
             randNumI = getRandomInt(0, matLength)
             randNumJ = getRandomInt(0, matLength)
         }
@@ -291,51 +267,58 @@ function locateMines(iIndx,jIndx){
 function cellClicked(elCell, i, j) {
     console.log('click')
     console.log(gBoard)
-    if(!gGame.isOn) return
-    if(isMineCounter === 0){
-        locateMines(i,j)
+    
+    if (!gGame.isOn) return
+    if (isMineCounter === 0) {   //אם אין מוקשים
+        locateMines(i, j)       //פיזור מוקשים בלחיצה הראשונה
         setMinesNegsCount(gBoard)
     }
-    renderTimer()
+    if (gHintOn) {
+        hintImplement(i, j)
+        return
+    }
+    renderTimer()   ///// תפעיל את הטיימר
     var locationCell = { i: i, j: j }
-    if(gBoard[i][j].isMarked)return
-    if (gBoard[i][j].isMine){   //הפסד - עליה על מוקש
-        renderCell({ i: i , j: j }, MINE)
-        
-        
-      
-        var elLife = document.querySelector(`.life${gLife}`) //לבבות חיים
-        console.log('glife: ',gLife)   ///         יש בעיה בספירה של glife
-        elLife.style.display = 'none'
-        gLife --
-        
+    if (gBoard[i][j].isMarked) return
+    if ((gBoard[i][j].isMine) && (!gBoard[i][j].isShown)) {   //עלייה על מוקש
+        renderCell({ i: i, j: j }, MINE)
+        var audio = new Audio('sounds/mine.wav')
+        audio.play()
 
-        if(gLife === 0)  winTrueLoseFalse(false)
+
+        var elLife = document.querySelector(`.life${gLife}`) //לבבות חיים
+        console.log('glife: ', gLife)
+        elLife.style.display = 'none'
+        gLife--
+        if (gLife === 0) winTrueLoseFalse(false)  /// אם נגמרו החיים אז הפסד משחק
     }
     // class="cell ${cellClass}"
-    if (!gBoard[i][j].isMine) {
-        if (gBoard[i][j].minesAroundCount > 0) {  // חושף תא אחד
+    if (!gBoard[i][j].isMine) {    // אם לא מוקש
+        if (gBoard[i][j].minesAroundCount > 0) {  //אם יש שכן מוקש -  חושף תא אחד
             renderCell(locationCell, gBoard[i][j].minesAroundCount)
         }
 
-        if (gBoard[i][j].minesAroundCount === 0) {   // רץ על השכנים לטובת חשיפה
+        if (gBoard[i][j].minesAroundCount === 0) {   //אם אין שכן מוקש -    ה
             // isShownCounter++
-            for (var k = (i - 1); k <= (i + 1); k++) {
+            for (var k = (i - 1); k <= (i + 1); k++) {  //       רץ על השכנים לטובת חשיפה 
                 if ((k < 0) || (k >= gBoard.length)) continue  // מוודא שלא יוצא מהמטריצה
 
-                for (var l=(j-1) ; l<=(j+1) ; l++) {
-                    if ((l<0) || (l>=gBoard[0].length)) continue   // מוודא שלא יוצא מהמטריצה
+                for (var l = (j - 1); l <= (j + 1); l++) {
+                    if ((l < 0) || (l >= gBoard[0].length)) continue   // מוודא שלא יוצא מהמטריצה
 
-                    if(gBoard[k][l].isShown) continue        // אם מדוגל או חשוף כבר אז דלג
-                    if(gBoard[k][l].isMarked) continue
+                    if (gBoard[k][l].isShown) continue        // אם מדוגל או חשוף כבר אז דלג
+                    if (gBoard[k][l].isMarked) continue
 
                     // if (gBoard[k][l].isMine) renderCell({ i: k, j: l }, '**')  // שורה חסרת משמעות
-                    
-                    if (!gBoard[k][l].isMine){
-                        if(gBoard[k][l].minesAroundCount) renderCell({ i: k, j: l },gBoard[k][l].minesAroundCount )  // גדול מאפס תראה מספר
-                        if(!gBoard[k][l].minesAroundCount) renderCell({ i: k, j: l } , '--' )  //// שווה לאפס - תראה סימן ריק
-                     } 
-                    
+                    ///////////// עצור כאןןןןןןןןן
+                    if (!gBoard[k][l].isMine) {    // בודק את השכנים של השכן-- תנאי מיותר לדעתי 
+                        if (gBoard[k][l].minesAroundCount) renderCell({ i: k, j: l }, gBoard[k][l].minesAroundCount)  // גדול מאפס תראה מספר
+                        if (!gBoard[k][l].minesAroundCount) {
+                            renderCell({ i: k, j: l }, '--')  //// שווה לאפס - תראה סימן ריק
+                            cellClicked(elCell, k, l)
+                        }
+                    }
+
                 }
             }
 
@@ -346,38 +329,162 @@ function cellClicked(elCell, i, j) {
 }
 
 function renderCell(location, value, trueFalse = true) {
-    if((value !== FLAG) && (gBoard[location.i][location.j].isShown === true)) return
+    if ((value !== FLAG) && (gBoard[location.i][location.j].isShown === true)) return
     var cellSelector = '.' + getClassName(location)    /// רינדור
     var elCell = document.querySelector(cellSelector)
     elCell.innerHTML = value
 
     gBoard[location.i][location.j].isShown = trueFalse  // שם ערך בוליאני באיז שואו
 
-    if(trueFalse) {
+    if (trueFalse) {
         // if(gBoard[location.i][location.j].isShown)
         isShownCounter++
-       
-    } else{  ///המקרה היחידי זה להוריד דגל להחזיר למצב הקודם
+
+    } else {  ///המקרה היחידי זה להוריד דגל להחזיר למצב הקודם
         isShownCounter--
     }
     checkIfWin()
-    console.log('isShownCounter: ',isShownCounter)
-    console.log('isMarkedCounter: ',isMarkedCounter)
-   
+    console.log('isShownCounter: ', isShownCounter)
+    console.log('isMarkedCounter: ', isMarkedCounter)
+
 }
 
-function renderTimer(){
-    if(gTimer !== 0) {
+function renderTimer() {
+    if (gTimer !== 0) {
+        console.log('whyyyy')
         return
-    } else{
+    } else {
         console.log('start timer')
         elTimer = document.querySelector('.timer')
-   timerSet = setInterval(timerCounting,1000)
-    }   
+        timerSet = setInterval(timerCounting, 1000)
+    }
 }
 
-function timerCounting(){
-    gTimer += 1.0
+function timerCounting() {
+    gTimer += 1
     // gTimer = +gTimer.toFixed(2)
-    elTimer.innerHTML = gTimer
-} 
+    elTimer.innerText = gTimer
+    // console.log('gtimer: ',gTimer)
+}
+
+function safeClick() {
+    if (!gGame.isOn) return
+    if (gSafeNum < 1) return
+    var locationSafe = getRandomCell()
+    if ((gBoard[locationSafe.i][locationSafe.j].isMine === true) || (gBoard[locationSafe.i][locationSafe.j].isShown === true)) {
+        safeClick()
+        return
+    } else {
+        console.log('unShown cell: ', locationSafe.i, ' ', locationSafe.j)
+    }
+    /// check how many neibors - store in var
+    // var neiborsNum = gBoard[locationSafe.i][locationSafe.j].minesAroundCount
+    // render cell with SAFE 
+    var safe = '🤙'
+
+    var cellSelector = '.' + getClassName(locationSafe)    /// רינדור
+    var elCell = document.querySelector(cellSelector)
+    elCell.innerHTML = safe
+
+
+
+    setTimeout(function () {
+        renderSafeCellBack(locationSafe);
+    }, 700)
+    gSafeNum--
+}
+
+function renderSafeCellBack(location) {
+    console.log('render safe back ', location)
+    var cellSelector = '.' + getClassName(location)    ///   רינדור חזרה של התא
+    var elCell = document.querySelector(cellSelector)
+    elCell.innerHTML = EMPTY
+
+    var elClick = document.querySelector('.safe-click') //שינוי מספר על המסך
+    elClick.innerHTML = `Safe Click -${gSafeNum}-`
+}
+
+
+function getRandomCell() {
+    var matLength = gLevel.SIZE
+    var randNumI = getRandomInt(0, matLength)
+    var randNumJ = getRandomInt(0, matLength)
+    var location = { i: randNumI, j: randNumJ }
+    return location
+}
+
+function hintOn() {
+    if (gHintNum < 1) return
+    console.log('hintNum:', gHintNum)
+
+    gHintOn = true
+    console.log('hintON is on')
+}
+
+function hintImplement(i, j) {
+  
+
+    for (var k = (i - 1); k <= (i + 1); k++) {  //       רץ על השכנים לטובת חשיפה 
+        if ((k < 0) || (k >= gBoard.length)) continue  // מוודא שלא יוצא מהמטריצה
+
+        for (var l = (j - 1); l <= (j + 1); l++) {
+            if ((l < 0) || (l >= gBoard[0].length)) continue   // מוודא שלא יוצא מהמטריצה
+
+            if (gBoard[k][l].isShown) continue        // אם מדוגל או חשוף כבר אז דלג
+            if (gBoard[k][l].isMarked) continue
+
+            if (gBoard[k][l].isMine) {
+                var cellSelector = '.' + 'cell-' + k + '-' + l   /// רינדור
+                var elCell = document.querySelector(cellSelector)
+                elCell.innerHTML = MINE
+
+                // setTimeout(function () {
+                //     renderHintCellBack(k, l);
+                // }, 900)
+            } else if (gBoard[k][l].minesAroundCount === 0) {
+
+                var cellSelector = '.' + 'cell-' + k + '-' + l   /// רינדור
+                var elCell = document.querySelector(cellSelector)
+                elCell.innerHTML = '--'
+
+                // setTimeout(function () {
+                //     renderHintCellBack(k, l);
+                // }, 900)
+
+            } else if (gBoard[k][l].minesAroundCount > 0) {
+                var cellSelector = '.' + 'cell-' + k + '-' + l   /// רינדור
+                var elCell = document.querySelector(cellSelector)
+                elCell.innerHTML = gBoard[k][l].minesAroundCount
+            }
+        }
+    
+    }
+
+    setTimeout(function () {
+        renderHintCellsBack(i, j);
+    }, 900)
+    var elHint = document.querySelector(`.hint${gHintNum}`) //להוריד מהמסך אייקון של הרמז
+    console.log('gHintNum: ', gHintNum)
+    elHint.style.display = 'none'
+
+    console.log('hintImplement is on')
+    gHintNum--
+    gHintOn = false
+
+}
+
+
+
+function renderHintCellsBack(i, j){
+    for (var k = (i - 1); k <= (i + 1); k++) {  //       רץ על השכנים לטובת חשיפה 
+        if ((k < 0) || (k >= gBoard.length)) continue  // מוודא שלא יוצא מהמטריצה
+
+        for (var l = (j - 1); l <= (j + 1); l++) {
+            if ((l < 0) || (l >= gBoard[0].length)) continue
+
+            var cellSelector = '.' + 'cell-' + k + '-' + l   /// רינדור
+            var elCell = document.querySelector(cellSelector)
+            elCell.innerHTML = ``
+        }
+    }
+}   

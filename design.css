@@ -2,7 +2,8 @@
     width: 70px;
     height: 70px;
     text-align: center;
-    background-color: rgb(146, 74, 104);
+    /* background-color: rgb(146, 74, 104); */
+    background-color: rgb(74, 146, 112);
 }
 
 body {
@@ -12,15 +13,16 @@ body {
     margin-top: 100px;
     font-size: 30px;
 }
-table{
+
+table {
     margin-top: 15px;
 }
 
-button{
+button {
     font-size: 18px;
 }
 
-.timer{
+.timer {
     color: rgb(118, 17, 54);
     width: 296px;
     background-color: rgb(140, 191, 220);
@@ -28,7 +30,7 @@ button{
     border: 30px
 }
 
-.game-over{
+.game-over {
     background-color: rgb(84, 50, 50);
     display: none;
     font-size: larger;
@@ -40,7 +42,7 @@ button{
     margin-top: 3px;
 }
 
-.win-game{
+.win-game {
     background-color: rgb(106, 194, 132);
     display: none;
     font-size: larger;
@@ -52,40 +54,42 @@ button{
     margin-top: 3px;
 }
 
-.smile{
-margin-left: 112px;
-font-size: 60px;
+.smile {
+    margin-left: 112px;
+    font-size: 60px;
 }
 
 
-.life1{
-display:inline-block;
-}
-.life2{
-display: span;
-}
-.life3{
-display: span;
+.life1 {
+    display: inline-block;
 }
 
-.safe-click{
+.life2 {
+    display: span;
+}
+
+.life3 {
+    display: span;
+}
+
+.safe-click {
     border-radius: 30%;
     color: aliceblue;
     background-color: cornflowerblue;
-    }
+}
 
-    .best-score{
-        color: chocolate;
-    }
+.best-score {
+    color: chocolate;
+}
 
-.hint1{
-    display:span;
-    }
-.hint2{
+.hint1 {
     display: span;
-    }
-.hint3{
+}
+
+.hint2 {
     display: span;
-    }
+}
 
-
+.hint3 {
+    display: span;
+}

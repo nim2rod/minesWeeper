@@ -38,25 +38,37 @@ function easyLevel() {
     gLevel.SIZE = 4
     gLevel.MINES = 2
     init()
-    // document.querySelector('.cell').style.height = '70px'
-    // document.querySelector('.cell').style.width = '70px'
-    // document.querySelector('.cell').style['background-color'] = 'grey'
+
+    const doc = document.querySelectorAll('.cell')
+    console.log('doc', doc);
+    doc.forEach((cell) => {
+        cell.style.height = '70px'
+        cell.style.width = '70px'
+    })
 }
 
 function mediumLevel() {
     gLevel.SIZE = 8
     gLevel.MINES = 12
     init()
-    // document.querySelector('.cell').style.height = '30px'
-    // document.querySelector('.cell').style.width = '30px'
-    // document.querySelector('.cell').style['background-color'] = 'yellow'
-    // document.querySelector('.cell').style.color = 'yellow'
+
+    const doc = document.querySelectorAll('.cell')
+    doc.forEach((cell) => {
+        cell.style.height = '52px'
+        cell.style.width = '52px'
+    })
 }
 
 function expertLevel() {
     gLevel.SIZE = 12
     gLevel.MINES = 30
     init()
+
+    const doc = document.querySelectorAll('.cell')
+    doc.forEach((cell) => {
+        cell.style.height = '37px'
+        cell.style.width = '37px'
+    })
 }
 
 function init() {

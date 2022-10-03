@@ -1,9 +1,10 @@
 .cell {
-    width: 50px;
-    height: 50px;
-
+    width: 70px;
+    height: 70px;
     text-align: center;
-    background-color: rgb(146, 74, 104);
+    /* background-color: rgb(146, 74, 104); */
+    background-color: rgb(170, 142, 153);
+
 }
 
 body {
@@ -111,8 +112,8 @@ button {
 /* MOBILE */
 @media (max-width: 500px) {
     .cell {
-        height: 30px;
-        width: 30px;
+        height: 70px;
+        width: 70px;
     }
 
     .timer {

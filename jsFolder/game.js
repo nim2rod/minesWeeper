@@ -3,8 +3,6 @@ var EMPTY = ''
 var FLAG = '🏁'
 var MINE = '💩'
 
-
-
 var isMarkedCounter = 0
 var isShownCounter = 0
 var isMineCounter = 0
@@ -23,11 +21,12 @@ var gGame = {
     isOn: false,
     shownCount: 0, markedCount: 0, secsPassed: 0
 }
+
 var gLevel = {
     SIZE: 4,
     MINES: 2
 }
-/// להוסיף בשורת body         oncontextmenu="return false;"
+/// להוסיף בשורת body        
 ////   oncontextmenu="return false;"
 
 function playerLevel(matSize, minesNumber) {
@@ -39,11 +38,19 @@ function easyLevel() {
     gLevel.SIZE = 4
     gLevel.MINES = 2
     init()
+    // document.querySelector('.cell').style.height = '70px'
+    // document.querySelector('.cell').style.width = '70px'
+    // document.querySelector('.cell').style['background-color'] = 'grey'
 }
+
 function mediumLevel() {
     gLevel.SIZE = 8
     gLevel.MINES = 12
     init()
+    // document.querySelector('.cell').style.height = '30px'
+    // document.querySelector('.cell').style.width = '30px'
+    // document.querySelector('.cell').style['background-color'] = 'yellow'
+    // document.querySelector('.cell').style.color = 'yellow'
 }
 
 function expertLevel() {
@@ -73,9 +80,9 @@ function init() {
 
     var elSmile = document.querySelector('.smile')          //סמיילי
     elSmile.innerHTML = '🙂'
+
     var elgameOver = document.querySelector('.game-over')   // מודל הפסד
     elgameOver.style.display = 'none'
-
     var elGameWin = document.querySelector('.win-game')     // מודל נצחון
     elGameWin.style.display = 'none'
 
@@ -85,6 +92,7 @@ function init() {
     elLife2.style.display = 'inline-block'
     var elLife3 = document.querySelector('.life3')          //לבבות חיים
     elLife3.style.display = 'inline-block'
+
     var elClick = document.querySelector('.safe-click')     //שינוי מספר על המסך
     elClick.innerHTML = `Safe Click -${gSafeNum}-`
     var elBestScore = document.querySelector('.best-score') //best score
@@ -163,11 +171,8 @@ function setMinesNegsCount2(iIndx, jIndx) {
 
 
 function setMinesNegsCount(board) {  /// רץ על כל המטריצה ושולח זוג קורדינטות לבדוק כמה שכנים
-
     for (var i = 0; i < board.length; i++) {
-
         for (var j = 0; j < board[0].length; j++) {
-
             var minesNeibCount = 0
             minesNeibCount = setMinesNegsCount2(i, j)
             board[i][j].minesAroundCount = minesNeibCount
@@ -211,9 +216,7 @@ function revealsMinesLose() {
 
 function winTrueLoseFalse(trueOrFalse) {
     if (trueOrFalse) {  //נצחון
-
         console.log('winner')
-
         var audio = new Audio('sounds/win.wav')
         audio.play()
 
@@ -264,10 +267,11 @@ function locateMines(iIndx, jIndx) {
         isMineCounter++
     }
 }
+
 function cellClicked(elCell, i, j) {
     console.log('click')
     console.log(gBoard)
-    
+
     if (!gGame.isOn) return
     if (isMineCounter === 0) {   //אם אין מוקשים
         locateMines(i, j)       //פיזור מוקשים בלחיצה הראשונה
@@ -346,7 +350,6 @@ function renderCell(location, value, trueFalse = true) {
     checkIfWin()
     console.log('isShownCounter: ', isShownCounter)
     console.log('isMarkedCounter: ', isMarkedCounter)
-
 }
 
 function renderTimer() {
@@ -422,7 +425,7 @@ function hintOn() {
 }
 
 function hintImplement(i, j) {
-  
+
 
     for (var k = (i - 1); k <= (i + 1); k++) {  //       רץ על השכנים לטובת חשיפה 
         if ((k < 0) || (k >= gBoard.length)) continue  // מוודא שלא יוצא מהמטריצה
@@ -457,7 +460,7 @@ function hintImplement(i, j) {
                 elCell.innerHTML = gBoard[k][l].minesAroundCount
             }
         }
-    
+
     }
 
     setTimeout(function () {
@@ -473,9 +476,7 @@ function hintImplement(i, j) {
 
 }
 
-
-
-function renderHintCellsBack(i, j){
+function renderHintCellsBack(i, j) {
     for (var k = (i - 1); k <= (i + 1); k++) {  //       רץ על השכנים לטובת חשיפה 
         if ((k < 0) || (k >= gBoard.length)) continue  // מוודא שלא יוצא מהמטריצה
 

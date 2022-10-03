@@ -5,32 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="design.css">
-    <title>Document</title>
+    <title>Mines-weeper</title>
 </head>
 <body onload="init()" oncontextmenu="return false;" >
-    <button onclick="easyLevel()">easy level🐠</button>
-    <button onclick="mediumLevel()">medium level🐬 </button>
-    <button onclick="expertLevel()">expert level🐳</button>
-    <div class="game-over"> game over</div>
-    <div class="win-game"> you win!!</div>
+    <section class="levels-bar">
+        <button onclick="easyLevel()">easy level 🐠</button>
+        <button onclick="mediumLevel()">medium level 🐬</button>
+        <button onclick="expertLevel()">expert level 🐳</button>
+    </section>
+    <div class="game-over">game over</div>
+    <div class="win-game">you win!!</div>
     <table>
         <tbody class="mines-board">
         </tbody>
     </table>
    <div class="timer">0</div>
    <button class="safe-click" onclick="safeClick()">Safe Click -3-</button>
-
     <button class="smile" onclick="init()">🙂</button>
+    <section class="life-box">
         <span class="life1" >💛</span>
         <span class="life2" >💛</span>
         <span class="life3" >💛</span>
-        <span class="best-score" >BEST SCORE: </span>
-        <div>
-            <span class="hint1" onclick="hintOn()">💡</span>
+    </section>
+    <span class="best-score" >BEST SCORE: </span>
+    <section class="hint-box">
+        <span class="hint1" onclick="hintOn()">💡</span>
         <span class="hint2" onclick="hintOn()">💡</span>
         <span class="hint3" onclick="hintOn()">💡</span>
-        </div>
-
+    </section>
     <script src="jsFolder/game.js"></script>
     <script src="jsFolder/utils.js"></script>
 </body>

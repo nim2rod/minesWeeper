@@ -2,8 +2,9 @@
     width: 70px;
     height: 70px;
     text-align: center;
-    /* background-color: rgb(146, 74, 104); */
-    background-color: rgb(170, 142, 153);
+    background-color: rgb(146, 74, 104);
+    border-radius: 2.5px;
+    /* background-color: rgb(170, 142, 153); */
 
 }
 
@@ -18,8 +19,13 @@ body {
     align-items: center;
 }
 
-/* .levels-bar{  
-} */
+.levels-bar button {
+    border-radius: 5px;
+    border-style: none;
+    height: 2.5em;
+    border: solid 1px #8c8686;
+}
+
 
 table {
     margin-top: 15px;
@@ -29,9 +35,12 @@ button {
     font-size: 18px;
 }
 
+
 .timer {
     color: rgb(118, 17, 54);
-    width: 216px;
+    /* width: 216px; */
+    width: 294px;
+    width: 150px;
     background-color: rgb(140, 191, 220);
     text-align: center;
     border: 30px
@@ -117,7 +126,8 @@ button {
     }
 
     .timer {
-        width: 135px;
+        /* width: 135px; */
+        width: 295px;
     }
 
     button {

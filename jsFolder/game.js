@@ -11,6 +11,7 @@ var gBestScore = ''
 var gSafeNum = 3
 var gLife = 3
 var gTimer = 0
+var gTimerIsOn = false
 var elTimer
 var timerSet
 var gHintNum = 3
@@ -77,6 +78,7 @@ function init() {
 
     clearInterval(timerSet)                                 // timer
     gTimer = 0
+    gTimerIsOn = false
     document.querySelector('.timer').innerText = gTimer
 
     isMineCounter = 0                                       // איפוסים
@@ -237,6 +239,7 @@ function winTrueLoseFalse(trueOrFalse) {
         elBestScore.innerHTML = `BEST SCORE: ${gBestScore}`
         clearInterval(timerSet)
         gTimer = 0
+        gTimerIsOn = false
         var elWinGame = document.querySelector('.win-game')
         elWinGame.style.display = 'block'
 
@@ -250,6 +253,7 @@ function winTrueLoseFalse(trueOrFalse) {
         gGame.isOn = false
         clearInterval(timerSet)
         gTimer = 0
+        gTimerIsOn = false
         console.log('loser')
         var elgameOver = document.querySelector('.game-over')
         elgameOver.style.display = 'block'
@@ -301,7 +305,6 @@ function cellClicked(elCell, i, j) {
         var audio = new Audio('sounds/mine.wav')
         audio.play()
 
-
         var elLife = document.querySelector(`.life${gLife}`) //לבבות חיים
         console.log('glife: ', gLife)
         elLife.style.display = 'none'
@@ -325,8 +328,6 @@ function cellClicked(elCell, i, j) {
                     if (gBoard[k][l].isShown) continue        // אם מדוגל או חשוף כבר אז דלג
                     if (gBoard[k][l].isMarked) continue
 
-                    // if (gBoard[k][l].isMine) renderCell({ i: k, j: l }, '**')  // שורה חסרת משמעות
-                    ///////////// עצור כאןןןןןןןןן
                     if (!gBoard[k][l].isMine) {    // בודק את השכנים של השכן-- תנאי מיותר לדעתי 
                         if (gBoard[k][l].minesAroundCount) renderCell({ i: k, j: l }, gBoard[k][l].minesAroundCount)  // גדול מאפס תראה מספר
                         if (!gBoard[k][l].minesAroundCount) {
@@ -365,11 +366,12 @@ function renderCell(location, value, trueFalse = true) {
 }
 
 function renderTimer() {
+    if (gTimerIsOn) return
     if (gTimer !== 0) {
-        console.log('whyyyy')
         return
     } else {
         console.log('start timer')
+        gTimerIsOn = true
         elTimer = document.querySelector('.timer')
         timerSet = setInterval(timerCounting, 1000)
     }
@@ -377,9 +379,7 @@ function renderTimer() {
 
 function timerCounting() {
     gTimer += 1
-    // gTimer = +gTimer.toFixed(2)
     elTimer.innerText = gTimer
-    // console.log('gtimer: ',gTimer)
 }
 
 function safeClick() {

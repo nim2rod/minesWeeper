@@ -110,7 +110,7 @@ function init() {
     var elClick = document.querySelector('.safe-click')     //שינוי מספר על המסך
     elClick.innerHTML = `Safe Click -${gSafeNum}-`
     var elBestScore = document.querySelector('.best-score') //best score
-    elBestScore.innerHTML = `BEST SCORE: ${gBestScore}`
+    elBestScore.innerHTML = `MINIMUM TIME: ${gBestScore}`
     var elHint = document.querySelector(`.hint1`) //להחזיר למסך אייקון של הרמז
     elHint.style.display = 'inline-block'
     var elHint = document.querySelector(`.hint2`) //להחזיר למסך אייקון של הרמז
@@ -238,7 +238,7 @@ function winTrueLoseFalse(trueOrFalse) {
         console.log('gBestScore', gBestScore);
         if (gBestScore > gTimer || !gBestScore) gBestScore = gTimer
         var elBestScore = document.querySelector('.best-score') //best score
-        elBestScore.innerHTML = `BEST SCORE: ${gBestScore}`
+        elBestScore.innerHTML = `MINIMUM TIME: ${gBestScore}`
         clearInterval(timerSet)
         gTimer = 0
         gTimerIsOn = false

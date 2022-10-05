@@ -4,14 +4,11 @@
     text-align: center;
     background-color: rgb(146, 74, 104);
     border-radius: 2.5px;
-    /* background-color: rgb(170, 142, 153); */
-
 }
 
 body {
     background-color: rgb(69, 226, 231);
     color: white;
-    /* margin-left: 850px; */
     margin-top: 100px;
     font-size: 30px;
     display: flex;
@@ -26,7 +23,6 @@ body {
     border: solid 1px #8c8686;
 }
 
-
 table {
     margin-top: 15px;
 }
@@ -34,7 +30,6 @@ table {
 button {
     font-size: 18px;
 }
-
 
 .timer {
     color: rgb(118, 17, 54);
@@ -100,7 +95,6 @@ button {
     background-color: cornflowerblue;
     margin-top: 0.7em;
 }
-
 
 .best-score {
     color: chocolate;

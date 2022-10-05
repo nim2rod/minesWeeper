@@ -24,7 +24,9 @@ var gGame = {
 
 var gLevel = {
     SIZE: 4,
-    MINES: 2
+    MINES: 2,
+    WIDTH_CELL: '70px',
+    FONT_SIZE: '1em'
 }
 /// להוסיף בשורת body        
 ////   oncontextmenu="return false;"
@@ -37,43 +39,41 @@ function playerLevel(matSize, minesNumber) {
 function easyLevel() {
     gLevel.SIZE = 4
     gLevel.MINES = 2
+    gLevel.WIDTH_CELL = '70px'
+    gLevel.FONT_SIZE = '1em'
     init()
-
-    const doc = document.querySelectorAll('.cell')
-    console.log('doc', doc);
-    doc.forEach((cell) => {
-        cell.style.height = '70px'
-        cell.style.width = '70px'
-    })
 }
 
 function mediumLevel() {
     gLevel.SIZE = 8
     gLevel.MINES = 12
+    gLevel.WIDTH_CELL = '52px'
+    gLevel.FONT_SIZE = '1em'
     init()
-
-    const doc = document.querySelectorAll('.cell')
-    doc.forEach((cell) => {
-        cell.style.height = '52px'
-        cell.style.width = '52px'
-    })
 }
 
 function expertLevel() {
     gLevel.SIZE = 12
     gLevel.MINES = 30
+    gLevel.WIDTH_CELL = '37px'
+    gLevel.FONT_SIZE = '0.8em'
     init()
-
-    const doc = document.querySelectorAll('.cell')
-    doc.forEach((cell) => {
-        cell.style.height = '37px'
-        cell.style.width = '37px'
-    })
 }
 
 function init() {
     gBoard = buildboard(gLevel.SIZE, gLevel.SIZE)           // board
     renderBoard(gBoard)
+
+    const doc = document.querySelectorAll('.cell')
+    doc.forEach((cell) => {
+        cell.style.height = gLevel.WIDTH_CELL
+        cell.style.width = gLevel.WIDTH_CELL
+    })
+
+    const size = document.querySelectorAll('.cell')
+    size.forEach((cell) => {
+        cell.style['font-size'] = gLevel.FONT_SIZE
+    })
 
     clearInterval(timerSet)                                 // timer
     gTimer = 0
@@ -181,7 +181,6 @@ function setMinesNegsCount2(iIndx, jIndx) {
 
 }
 
-
 function setMinesNegsCount(board) {  /// רץ על כל המטריצה ושולח זוג קורדינטות לבדוק כמה שכנים
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
@@ -217,6 +216,7 @@ function rightClicked(i, j) {
         renderCell(locationFlag, EMPTY, false)
     }
 }
+
 function revealsMinesLose() {
     // var locationCell = { i: i, j: j }
     for (var i = 0; i < gBoard.length; i++) {

@@ -86,7 +86,7 @@ function init() {
     isShownCounter = 0
     gSafeNum = 3
     gLife = 3
-    gBestScore = ''
+    // gBestScore = ''
     gHintNum = 3
     gHintOn = false
 
@@ -234,7 +234,9 @@ function winTrueLoseFalse(trueOrFalse) {
         var audio = new Audio('sounds/win.wav')
         audio.play()
 
-        if (gBestScore < gTimer) gBestScore = gTimer
+        console.log('gtimer', gTimer);
+        console.log('gBestScore', gBestScore);
+        if (gBestScore > gTimer || !gBestScore) gBestScore = gTimer
         var elBestScore = document.querySelector('.best-score') //best score
         elBestScore.innerHTML = `BEST SCORE: ${gBestScore}`
         clearInterval(timerSet)
